@@ -78,6 +78,10 @@ docker: 													 ##  Build a Docker image, currently only supports x86 host
 	docker push $(DOCKER_IMAGE_TAG)
 .PHONY: docker
 
+docker-multiarch:
+	docker buildx build --pull -f Dockerfile --platform linux/amd64,linux/arm64 --build-arg flavor=$(FLAVOR) --push -t $(DOCKER_IMAGE_TAG) .
+.PHONY: docker-multiarch
+
 docker-login:
 	 aws ecr get-login-password --region $(AWS_REGION) | docker login --username AWS --password-stdin $(DOCKER_ECR)
 
